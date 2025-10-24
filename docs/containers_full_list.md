@@ -1,4 +1,4 @@
-### Containers used in this workflow (outside nf-core pipelines)
+### Containers used in this workflow 
 
 Below is the complete list of Docker images used in this repository, grouped by usage area.  
 These containers are referenced in the Nextflow processes, standalone scripts, or documentation files.

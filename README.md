@@ -41,6 +41,8 @@ docker pull lucidif/fanc
 ```
 ### Containers used in this workflow (outside nf-core pipelines)
 
+Below is the partial list of Docker images that are used outside of the nf-core standard workflows.
+
 #### Core and supplementary workflow containers
 
 | **Container** | **Source / Reference** | **Purpose** |
