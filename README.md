@@ -23,28 +23,28 @@ The workflow includes dedicated modules for integrative data analysis:
 - **Cumulative frequency** and distance-based analyses between genomic features.
 - **Integration of Micro-C contact maps** and ChIP-seq peaks to identify physical proximity between **MLL2-bound LINE-1 elements** and their putative target genes.
 
+## Software implementation and containers
 
+All processes are executed within **Docker containers** to ensure full reproducibility and portability across environments.
 
+- **Standard containers** are automatically pulled from the [nf-core community registry](https://nf-co.re).  
+- **Custom containers** are hosted under [lucidif Docker Hub](https://hub.docker.com/u/lucidif).  
+- **Third-party containers** (e.g., `rocker/tidyverse`) are used for specific R-based post-processing and visualization steps.
 
-## Docker and Pipelines
+To use custom or third-party containers within nf-core-compatible workflows, download them and rename with a `quay.io/` prefix if required.
 
-All processes are analyzed using Docker containers, or are already included within the nf-core pipelines (see the documentation of each individual pipeline).
-
-For Docker images not included in nf-core pipelines, the corresponding containers can be downloaded from my Docker Hub:
-https://hub.docker.com/u/lucidif
-To use my custom Docker images inside a Nextflow pipeline, it is required to download the image from the indicated Docker Hub and rename it by prefixing quay.io/ to the image name.
-
-Example:
-
+**Example:**
 ```bash
 docker pull lucidif/fanc
 # Rename for nf-core compatibility:
 # quay.io/lucidif/fanc
 ```
 
-List of custom Docker images used outside standard nf-core community pipelines:
+## Assets
 
-- lucidif/fanc
-- lucidif/microc
-- rocker/tidyverse:4.5.1
-- 
+The `assets/` directory contains supplementary data used by the workflow, including:
+
+- **GREAT analysis results** (gene–regulatory associations and enrichment outputs).
+
+> **Note:** Due to GitHub storage limits, all assets larger than **100 MB** are **not included** in this repository.  
+> These files must be downloaded separately following the instructions provided in the project documentation or upon request from the authors.
