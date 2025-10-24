@@ -39,6 +39,12 @@ docker pull lucidif/fanc
 # Rename for nf-core compatibility:
 # quay.io/lucidif/fanc
 ```
+Custom Docker images used:
+
+- lucidif/fanc
+- lucidif/microc
+- rocker/tidyverse:4.5.1
+
 
 ## Assets
 
@@ -48,3 +54,25 @@ The `assets/` directory contains supplementary data used by the workflow, includ
 
 > **Note:** Due to GitHub storage limits, all assets larger than **100 MB** are **not included** in this repository.  
 > These files must be downloaded separately following the instructions provided in the project documentation or upon request from the authors.
+
+### Containers used in this workflow (outside nf-core pipelines)
+
+| **Container** | **Source** | **Purpose** |
+|----------------|------------|--------------|
+| [`lucidif/fanc`](https://hub.docker.com/r/lucidif/fanc) | Docker Hub | FAN-C environment for Micro-C and chromatin contact map analyses |
+| [`lucidif/microc`](https://hub.docker.com/r/lucidif/microc) | Docker Hub | Custom Micro-C processing workflow (pairtools, cooler, FAN-C) |
+| [`rocker/tidyverse:4.5.1`](https://hub.docker.com/_/rocker) | Docker Hub | R-based statistical analysis and visualization (ggplot2, dplyr, etc.) |
+| [`quay.io/biocontainers/bedtools:2.31.1--hf5e1c6e_1`](https://quay.io/repository/biocontainers/bedtools) | Biocontainers | Genomic interval operations (intersection, coverage, shuffling) |
+| [`quay.io/biocontainers/deeptools:3.5.5--py_0`](https://quay.io/repository/biocontainers/deeptools) | Biocontainers | Signal track generation and heatmap plotting |
+| [`quay.io/biocontainers/macs2:2.2.7.1--py39hbf8eff0_4`](https://quay.io/repository/biocontainers/macs2) | Biocontainers | Peak calling for ChIP-seq analysis |
+| [`quay.io/biocontainers/star:2.7.10a--h43eeafb_0`](https://quay.io/repository/biocontainers/star) | Biocontainers | RNA-seq and ChIP-seq read alignment |
+| [`quay.io/biocontainers/rsem:1.3.1--pl526haddd2b5_0`](https://quay.io/repository/biocontainers/rsem) | Biocontainers | Transcript quantification for RNA-seq |
+| [`quay.io/biocontainers/diffbind:3.14--r42hdfd78af_0`](https://quay.io/repository/biocontainers/diffbind) | Biocontainers | Differential binding analysis for ChIP-seq |
+| [`quay.io/biocontainers/deseq2:1.34.0--r41hc247a5b_0`](https://quay.io/repository/biocontainers/deseq2) | Biocontainers | Differential expression analysis for RNA-seq |
+
+## License
+
+This workflow is distributed under the **GNU General Public License v2.0 (GPL-2.0)**.  
+You are free to use, modify, and distribute this software under the terms of the GPL-2.0 license.
+
+See the full text at: [https://www.gnu.org/licenses/old-licenses/gpl-2.0.html](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
