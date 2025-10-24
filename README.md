@@ -44,7 +44,7 @@ docker pull lucidif/fanc
 
 The `assets/` directory contains supplementary data used by the workflow, including:
 
-- **GREAT analysis results** (gene–regulatory associations and enrichment outputs).
+- **GREAT analysis results** (gene–regulatory associations).
 
 > **Note:** Due to GitHub storage limits, all assets larger than **100 MB** are **not included** in this repository.  
 > These files must be downloaded separately following the instructions provided in the project documentation or upon request from the authors.
