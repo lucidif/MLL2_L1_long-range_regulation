@@ -1,0 +1,8 @@
+{
+    "filters": [
+      { "id": "mismatchNM",  "tag": "NM:<=4" },
+      { "id": "mismatchnM",  "tag": "nM:<=4" }
+    ],
+    "rule": " mismatchNM | mismatchnM "
+  }
+  
