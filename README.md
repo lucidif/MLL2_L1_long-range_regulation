@@ -39,21 +39,7 @@ docker pull lucidif/fanc
 # Rename for nf-core compatibility:
 # quay.io/lucidif/fanc
 ```
-Custom Docker images used:
 
-- lucidif/fanc
-- lucidif/microc
-- rocker/tidyverse:4.5.1
-
-
-## Assets
-
-The `assets/` directory contains supplementary data used by the workflow, including:
-
-- **GREAT analysis results** (gene–regulatory associations).
-
-> **Note:** Due to GitHub storage limits, all assets larger than **100 MB** are **not included** in this repository.  
-> These files must be downloaded separately following the instructions provided in the project documentation or upon request from the authors.
 
 ### Containers used in this workflow (outside nf-core pipelines)
 
@@ -69,6 +55,15 @@ The `assets/` directory contains supplementary data used by the workflow, includ
 | [`quay.io/biocontainers/rsem:1.3.1--pl526haddd2b5_0`](https://quay.io/repository/biocontainers/rsem) | Biocontainers | Transcript quantification for RNA-seq |
 | [`quay.io/biocontainers/diffbind:3.14--r42hdfd78af_0`](https://quay.io/repository/biocontainers/diffbind) | Biocontainers | Differential binding analysis for ChIP-seq |
 | [`quay.io/biocontainers/deseq2:1.34.0--r41hc247a5b_0`](https://quay.io/repository/biocontainers/deseq2) | Biocontainers | Differential expression analysis for RNA-seq |
+
+## Assets
+
+The `assets/` directory contains supplementary data used by the workflow, including:
+
+- **GREAT analysis results** (gene–regulatory associations).
+
+> **Note:** Due to GitHub storage limits, all assets larger than **100 MB** are **not included** in this repository.  
+> These files must be downloaded separately following the instructions provided in the project documentation or upon request from the authors.
 
 ## System requirements
 
@@ -92,7 +87,7 @@ All dependencies are containerized. No local installations are required, but the
 
 ### Hardware requirements
 
-- **Minimum:** 8 CPU cores, **32 GB RAM**, ~100 GB disk space  
+- **Minimum:** 8 CPU cores, 32 GB RAM, ~100 GB disk space  
   *(Minimum memory increased to meet STAR genome indexing requirements for mouse mm10)*  
 - **Recommended:** ≥ 32 CPU cores, ≥ 64 GB RAM, ≥ 200 GB disk space for Micro-C workflows  
 - **Tested:** 12 cores / 24 threads with 96–126 GB RAM on AMD Ryzen 9 systems
