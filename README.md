@@ -15,6 +15,15 @@ The workflow combines **nf-core community pipelines** with **custom Nextflow mod
 | **RNA-seq** | [`nf-core/rnaseq v3.14.0`](https://nf-co.re/rnaseq) + [`nf-core/differentialabundance`](https://nf-co.re/differentialabundance) | Alignment (`STAR`), quantification (`RSEM`), differential expression (`DESeq2`). |
 | **Micro-C** | Custom Nextflow pipeline | Implements the Dovetail Genomics protocol: alignment (`BWA-MEM`), parsing/deduplication (`pairtools`), contact map generation (`cooler`), and higher-order chromatin analysis (`FAN-C`, `TADCompare`). |
 
+## Integrative downstream analyses
+
+The workflow includes dedicated modules for integrative data analysis:
+
+- **Gene classification** based on H3K27me3 domain width.
+- **Cumulative frequency** and distance-based analyses between genomic features.
+- **Integration of Micro-C contact maps** and ChIP-seq peaks to identify physical proximity between **MLL2-bound LINE-1 elements** and their putative target genes.
+
+
 
 
 ## Docker and Pipelines
