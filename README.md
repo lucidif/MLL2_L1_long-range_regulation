@@ -70,6 +70,33 @@ The `assets/` directory contains supplementary data used by the workflow, includ
 | [`quay.io/biocontainers/diffbind:3.14--r42hdfd78af_0`](https://quay.io/repository/biocontainers/diffbind) | Biocontainers | Differential binding analysis for ChIP-seq |
 | [`quay.io/biocontainers/deseq2:1.34.0--r41hc247a5b_0`](https://quay.io/repository/biocontainers/deseq2) | Biocontainers | Differential expression analysis for RNA-seq |
 
+## System requirements
+
+The workflow is implemented using **Nextflow v23.04.4** and tested on **Linux (Ubuntu 22.04)** systems.  
+It is compatible with **local** environments that support dockers. 
+
+### Software dependencies
+
+All dependencies are containerized. No local installations are required, but the following must be available on the host system:
+
+- **Nextflow ≥ 23.04.4**  
+- **Docker ≥ 24.0**  
+- **Git ≥ 2.34**
+
+### Tested environments
+
+| System name | CPU / RAM | Storage | OS | Status |
+|--------------|------------|----------|-----|---------|
+| **device1** | AMD Ryzen 9 5900X (12 cores / 24 threads), 96 GiB RAM | SSD 1 TB + HDD 2 TB × 3 | Ubuntu 22.04 LTS | ✅ Tested |
+| **device2** | AMD Ryzen 9 7900 (12 cores / 24 threads), 126 GiB RAM | SSD 2 TB + HDD 4 TB × 2 | Ubuntu 22.04 LTS | ✅ Tested |
+
+### Hardware requirements
+
+- **Minimum:** 8 CPU cores, **32 GB RAM**, ~100 GB disk space  
+  *(Minimum memory increased to meet STAR genome indexing requirements for mouse mm10)*  
+- **Recommended:** ≥ 32 CPU cores, ≥ 64 GB RAM, ≥ 200 GB disk space for Micro-C workflows  
+- **Tested:** 12 cores / 24 threads with 96–126 GB RAM on AMD Ryzen 9 systems
+
 ## License
 
 This workflow is distributed under the **GNU General Public License v2.0 (GPL-2.0)**.  
