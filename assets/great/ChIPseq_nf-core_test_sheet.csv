@@ -1,0 +1,16 @@
+sample,fastq_1,fastq_2,antibody,control
+1_input,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/220907_1_input_1.fastq.gz,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/220907_1_input_2.fastq.gz,,
+Anti-GFP,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/220907_Anti-GFP_1.fastq.gz,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/220907_Anti-GFP_2.fastq.gz,GFP,1_input
+Anti-MLL1,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/220907_Anti-MLL1_1.fastq.gz,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/220907_Anti-MLL1_2.fastq.gz,MLL1,1_input
+Anti-MENIN,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/220907_Anti-MENIN_1.fastq.gz,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/220907_Anti-MENIN_2.fastq.gz,MENIN,1_input
+Anti-RBPP1,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/220907_Anti-RBPP1_1.fastq.gz,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/220907_Anti-RBPP1_2.fastq.gz,RbBP5,1_input
+Anti-WDR5,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/220907_Anti-WDR5_1.fastq.gz,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/220907_Anti-WDR5_2.fastq.gz,WDR5,1_input
+Anti-Mll1_A,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230316_Anti-Mll1_A_1.fastq.gz,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230316_Anti-Mll1_A_2.fastq.gz,MLL1,1_input
+Anti-GFP_B,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230418_Anti-GFP_B_1.fastq.gz,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230418_Anti-GFP_B_2.fastq.gz,GFP,1_input
+Anti-RbBp5_B,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230418_Anti-RbBp5_B_1.fastq.gz,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230418_Anti-RbBp5_B_2.fastq.gz,RbBp5,1_input
+Anti-Menin_B,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230418_Anti-Menin_B_1.fastq.gz,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230418_Anti-Menin_B_2.fastq.gz,MENIN,1_input
+Anti-Mll1_B,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230418_Anti-Mll1_B_1.fastq.gz,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230418_Anti-Mll1_B_2.fastq.gz,MLL1,1_input
+Mll2_KO_Mll1_A,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230418_Mll2_KO_Mll1_A_1.fastq.gz,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230418_Mll2_KO_Mll1_A_2.fastq.gz,Mll1,1_input
+Mll2_KO_Mll1_B,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230418_Mll2_KO_Mll1_B_1.fastq.gz,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230418_Mll2_KO_Mll1_B_2.fastq.gz,Mll1,1_input
+Double_KO_RbBP5_A,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230418_Double_KO_RbBP5_A_1.fastq.gz,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230418_Double_KO_RbBP5_A_2.fastq.gz,RbBP5,1_input
+Double_KO_RbBP5_B,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230418_Double_KO_RbBP5_B_1.fastq.gz,/mnt/datawk1/data/Lara/CHiPseq_MLL_spikein/renamed/230418_Double_KO_RbBP5_B_2.fastq.gz,RbBP5,1_input

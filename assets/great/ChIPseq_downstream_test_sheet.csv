@@ -1,0 +1,3 @@
+sample,bam,single_end,antibody,control
+D4_WT_input.mLb.mkD,/mnt/datawk1/analysis/Lara/test_chipseq_dowstream/in/2024_07_Lara_chip/D4_WT_input.mLb.mkD.sorted.bam,false,,
+D4WTMLL2B,/mnt/datawk1/analysis/Lara/test_chipseq_dowstream/in/240926_chip_D4_bam/D4WTMLL2B.mLb.mkD.sorted.bam,false,Anti-GFP,D4_WT_input.mLb.mkD

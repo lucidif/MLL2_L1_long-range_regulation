@@ -1,0 +1,8 @@
+id	variable	reference	target	blocking
+D0_DKO_vs_WT	condition	D0WT	D0DoubleKO	
+D4_DKO_VS_WT	condition	D4WT	D4DoubleKO	
+D4WT_VS_D0WT	condition	D0WT	D4WT	
+D4MLL1KO_VS_WT	condition	D4WT	D4MLL1KO
+D0Mll1KO_vs_WT	condition	D0WT	D0Mll1KO
+D0Mll2KO_vs_WT	condition	D0WT	D0Mll2KO
+D4MLL2KO_vs_WT	condition	D4WT	D4MLL2KO
