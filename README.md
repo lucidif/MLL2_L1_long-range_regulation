@@ -7,6 +7,9 @@ It reproduces and extends the computational procedures described in the *Methods
 
 The workflow combines **nf-core community pipelines** with **custom Nextflow modules** and **R/Bash scripts** for multi-omic integration and visualization.
 
+For installation and usage instructions, please refer to the [Installation Guide](docs/INSTALL.md).
+
+
 ## Pipeline summary
 
 | **Analysis type** | **Workflow / Tools** | **Description** |
