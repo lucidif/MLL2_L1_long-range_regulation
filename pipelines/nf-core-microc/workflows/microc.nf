@@ -64,20 +64,27 @@ include { MULTIQC                     } from '../modules/nf-core/multiqc/main'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
 include { CAT_FASTQ                   } from '../modules/nf-core/cat/fastq/main'
 include { SAMTOOLS_FAIDX              } from '../modules/nf-core/samtools/faidx/main'
+include { SAMTOOLS_REMOVEUNMAP        } from '../modules/local/samtools/remove/main'
 //include { PAIRTOOLS_PARSE             } from '../modules/nf-core/pairtools/parse/main'
 //include { PAIRTOOLS_SORT              } from '../modules/nf-core/pairtools/sort/main'
 //include { PAIRTOOLS_DEDUP             } from '../modules/nf-core/pairtools/dedup/main'
 include { PRESEQ_LCEXTRAP             } from '../modules/nf-core/preseq/lcextrap/main'
 include { BWA_MEM                     } from '../modules/nf-core/bwa/mem/main'
-include { BWA_ALN                     } from '../modules/nf-core/bwa/aln/main'
-include { BWA_SAMSE                   } from '../modules/nf-core/bwa/samse/main'
+include { BWA_MEM     as  MULTI_BWA_MEM   } from '../modules/nf-core/bwa/mem/main'
+//include { BWA_ALN                     } from '../modules/nf-core/bwa/aln/main'
+//include { BWA_SAMSE                   } from '../modules/nf-core/bwa/samse/main'
+//include { BWA_SAMPE                   } from '../modules/nf-core/bwa/sampe/main'
+include { BWA_ALN as BWA_ALN_1 } from '../modules/local/bwa/aln/main'
+include { BWA_ALN as BWA_ALN_2 } from '../modules/local/bwa/aln/main'
+include { BWA_SAMSE as BWA_SAMSE_1 } from '../modules/nf-core/bwa/samse/main'
+include { BWA_SAMSE as BWA_SAMSE_2 } from '../modules/nf-core/bwa/samse/main'
 
-include { PAIRIX                      } from '../modules/nf-core/pairix/main'
+include { PAIRIX                      } from '../modules/local/pairix/main'
 include { COOLER_CLOAD                } from '../modules/nf-core/cooler/cload/main'
 include { HICEXPLORER_HICPCA          } from '../modules/nf-core/hicexplorer/hicpca/main'
 
-
 include { PAIRTOOLS_PARSE             } from '../modules/local/pairtools/parse/main'
+include { PAIRTOOLS_PARSE as PAIRTOOLS_PARSE_RE } from '../modules/local/pairtools/parse/main'
 include { PAIRTOOLS_SORT              } from '../modules/local/pairtools/sort/main'
 include { PAIRTOOLS_DEDUP             } from '../modules/local/pairtools/dedup/main'
 include { PAIRTOOLS_SPLIT             } from '../modules/local/pairtools/split/main'
@@ -89,6 +96,8 @@ include { JUICER_PRE     as   JUICER_PRE_250k  } from '../modules/local/juicer/p
 include { JUICER_PRE     as   JUICER_PRE_50k  } from '../modules/local/juicer/pre.nf'
 //SUB-WORKFLOWS
 //include { CAT_SAMPLES                 } from '../subworkflows/local/cat_samples.nf'
+include { SAMTOOLS_MERGE } from '../modules/local/samtools/merge/main'
+include { SAMTOOLS_SORT as SAMTOOLS_SORT_FILLRE } from '../modules/nf-core/samtools/sort/main'
 
 
 /*
@@ -227,39 +236,140 @@ workflow MICROC {
                     [[],params.fasta], 
                     false 
                 )
+
+        ch_bamin = BWA_MEM.out.bam
+        
     }else{
-       BWA_ALN (
-          ch_starter,
-          [[],params.fasta],
-          //[,],
-          [[],params.index]
-       )
+        // MULTI_BWA_MEM ( ch_starter, 
+        //             [[],params.index], 
+        //             [[],params.fasta], 
+        //             false 
+        //         )
 
       //  BWA_SAMSE (
 
       //  )
       //TODO convert in bam
+            // split ends
+    //ch_end1 = ch_starter.map { meta, fq1, fq2 -> tuple(meta, fq1) }
+    //ch_end2 = ch_starter.map { meta, fq1, fq2 -> tuple(meta, fq2) }
+
+//ch_end1 = ch_starter.map { meta, reads -> tuple(meta, [ reads[0] ]) }
+//ch_end2 = ch_starter.map { meta, reads -> tuple(meta, [ reads[1] ]) }
+
+ch_end1 = ch_starter.map { meta, reads -> tuple(meta + [single_end: true, end: 1], reads[0]) }
+ch_end2 = ch_starter.map { meta, reads -> tuple(meta + [single_end: true, end: 2], reads[1]) }
+
+    // bwa aln (produce .sai) per end
+    BWA_ALN_1( ch_end1, [[], params.index] )
+    BWA_ALN_2( ch_end2, [[], params.index] )
+
+    // bwa samse per end (produce SAM)
+    // NB: i moduli nf-core di solito vogliono: (meta, sai, fastq) + fasta
+    // Se la signature del tuo module è diversa, si adatta di 1 riga, ma l’idea è questa.
+
+ch_index = Channel.value( tuple([id: 'bwa_index'], file(params.index).parent) )
+
+ch_samse_1_in = BWA_ALN_1.out.sai
+  .join(ch_end1, by: [0])
+  .map { meta, fastq, sai -> tuple(meta, sai, fastq) }
+
+ch_samse_2_in = BWA_ALN_2.out.sai
+  .join(ch_end2, by: [0])
+  .map { meta, fastq, sai -> tuple(meta, sai, fastq) }
+
+BWA_SAMSE_1( ch_samse_1_in, ch_index )
+BWA_SAMSE_2( ch_samse_2_in, ch_index )
+
+//   BWA_SAMSE_1(
+//   ch_samse_1_in,
+//   [[], params.fasta]
+// )
+
+// BWA_SAMSE_2(
+//   ch_samse_2_in,
+//   [[], params.fasta]
+// )
+
+
+    // Per ora: stop qui (output SAM per end)
+    // ch_bamin non esiste ancora in questo branch
+        ch_samse1_bam_norm = BWA_SAMSE_1.out.bam
+            .map { meta, bam ->
+                def meta_base = meta.subMap(meta.keySet().findAll { !(it in ['end', 'single_end']) })
+                tuple(meta_base, bam)
+            }
+
+        ch_samse2_bam_norm = BWA_SAMSE_2.out.bam
+            .map { meta, bam ->
+                def meta_base = meta.subMap(meta.keySet().findAll { !(it in ['end', 'single_end']) })
+                tuple(meta_base, bam)
+            }
+
+        ch_fillre_bams = ch_samse1_bam_norm
+            .join(ch_samse2_bam_norm, by: [0])
+            .map { meta, bam1, bam2 -> tuple(meta, [bam1, bam2]) }
+
+        SAMTOOLS_MERGE(
+            ch_fillre_bams
+        )
+
+        SAMTOOLS_SORT_FILLRE(
+            SAMTOOLS_MERGE.out.bam,
+            Channel.value([[], file(params.fasta)])
+        )
+
+        ch_bamin = SAMTOOLS_SORT_FILLRE.out.bam
+
+
+
     }
 
 
+    if (params.stop_after_bam == false){
+
+    
+
+    if (params.removeUnmapped == true){
+        SAMTOOLS_REMOVEUNMAP(
+            ch_bamin
+        )
+        ch_bamin = SAMTOOLS_REMOVEUNMAP.out.bam
+    }
 
     //
     //
     //
 
     //ch_bamin=FASTQ_ALIGN_BWA.out.bam
-    ch_bamin=BWA_MEM.out.bam
+
 
     ch_chrom_sizes = CHROMSIZES ( params.fasta ).sizes
 
-    PAIRTOOLS_PARSE(
-        ch_bamin,
-        params.fasta
-    )
+    // PAIRTOOLS_PARSE(
+    //     ch_bamin,
+    //     params.fasta
+    // )
 
-    PAIRTOOLS_SORT(
-        PAIRTOOLS_PARSE.out.pairsam
-    )
+    if (params.fillRE){
+        PAIRTOOLS_PARSE_RE(
+            ch_bamin,
+            params.fasta
+        )
+        ch_pairsam = PAIRTOOLS_PARSE_RE.out.pairsam
+    } else {
+        PAIRTOOLS_PARSE(
+            ch_bamin,
+            params.fasta
+        )
+        ch_pairsam = PAIRTOOLS_PARSE.out.pairsam
+    }
+
+    PAIRTOOLS_SORT( ch_pairsam )
+
+    // PAIRTOOLS_SORT(
+    //     PAIRTOOLS_PARSE.out.pairsam
+    // )
 
     PAIRTOOLS_DEDUP(
        PAIRTOOLS_SORT.out.sorted 
@@ -271,9 +381,11 @@ workflow MICROC {
        PAIRTOOLS_DEDUP.out.pairs
     )
 
+    if (params.skip_pairsQC == false){
     PAIRTOOLS_QC (
         PAIRTOOLS_DEDUP.out.stat
     )
+    }
 
     BAM_SORT_STATS_SAMTOOLS(
         PAIRTOOLS_SPLIT.out.bam,
@@ -364,6 +476,9 @@ workflow MICROC {
         ch_multiqc_logo.toList()
     )
     multiqc_report = MULTIQC.out.report.toList()
+
+}
+
 }
 
 /*

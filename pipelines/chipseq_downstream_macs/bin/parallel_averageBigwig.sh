@@ -9,8 +9,8 @@ function process() {
     echo "${1}"
     echo `ls ${2}/${1}*`
     infiles=`ls ${2}/${1}*`
-    echo "docker run -v $3:$3 -v $2:$2 -w $3 -u $(id -u):$(id -g) quay.io/biocontainers/deeptools:3.5.5--pyhdfd78af_0 bigwigAverage -b ${infiles} -o ${3}/${1}_average.bw"
-    docker run -v $3:$3 -v $2:$2 -w $3 -u $(id -u):$(id -g) quay.io/biocontainers/deeptools:3.5.5--pyhdfd78af_0 bigwigAverage -b ${infiles} -o ${3}/${1}_average.bw
+    echo "sudo docker run -v $3:$3 -v $2:$2 -w $3 -u $(id -u):$(id -g) quay.io/biocontainers/deeptools:3.5.5--pyhdfd78af_0 bigwigAverage -p 4 -b ${infiles} -o ${3}/${1}_average.bw"
+    sudo docker run -v $3:$3 -v $2:$2 -w $3 -u $(id -u):$(id -g) quay.io/biocontainers/deeptools:3.5.5--pyhdfd78af_0 bigwigAverage -b ${infiles} -o ${3}/${1}_average.bw
 
 }
 echo "end parallel"
@@ -58,7 +58,7 @@ IFS=' ' read -r -a patterns_array <<< "$arg1"
 echo $patterns_array
 
 # echo "parallel --jobs 8 --halt 1 --line-buffer process {} "$arg2" "$arg3" ::: "${patterns[@]}""
-parallel --jobs 8 --halt 1 --line-buffer process {} "$arg2" "$arg3" ::: "${patterns_array[@]}"
+parallel --jobs 2 --halt 1 --line-buffer process {} "$arg2" "$arg3" ::: "${patterns_array[@]}"
 
 #parallel --jobs 8 --halt 1 --line-buffer 'in=`echo "${inpath}"`; out=`echo "${outfile}"` ; infiles=$(ls "$in"/{}*) ; sudo docker run -v ${outpath}:${outpath} -v ${inpath}:${inpath} -w ${outpath} -u $(id -u):$(id -g) quay.io/biocontainers/deeptools:3.5.5--pyhdfd78af_0 bigwigAverage -b ${infiles} -o $out/{}_average.bw' ::: $patterns_array
 

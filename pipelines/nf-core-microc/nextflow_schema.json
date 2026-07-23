@@ -106,12 +106,33 @@
                 "hidden": true,
                 "help_text": "if true skip juicetool pre step"
             },
+            "skip_pairsQC":{
+                "type": "boolean",
+                "description": "if true dosn't execute pairs qc",
+                "fa_icon": "fas fa-ban",
+                "hidden": false,
+                "help_text": "if true skip the quality control of pairs.gz file"
+            },
             "fillRE":{
                 "type": "boolean",
-                "description": "fill the raw counts bin that contain repertitive elements by using inverencial approach",
+                "description": "fill the raw counts bin that contain repertitive elements by using inferencial approach",
                 "fa_icon": "fas fa-ban",
                 "hidden": true,
                 "help_text": "if true use the strategy descrived here : https://github.com/keleslab/mHiC/"
+            },
+            "stop_after_bam" : {
+                "type": "boolean",
+                "description": "if true stop after generation of bam",
+                "fa_icon": "fas fa-ban",
+                "hidden": false,
+                "help_text": "if true skip all other steps after ban generation, included pairtools"
+            },
+            "removeUnmapped":{
+                "type": "boolean",
+                "description": "remove unmapped pairs of reads before pairtools operations",
+                "fa_icon": "fas fa-ban",
+                "hidden": false,
+                "help_text": "remove unmapped pairs help to increse the speed of the pipeline when there are many unmapped reads"
             }
         },
         "institutional_config_options": {
