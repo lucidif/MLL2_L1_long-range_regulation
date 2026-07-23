@@ -46,7 +46,7 @@ KO_day0_A,fastq/KO_day0_A_1.fastq.gz,fastq/KO_day0_A_2.fastq.gz,KO_D0,A
 KO_day0_B,fastq/KO_day0_B_1.fastq.gz,fastq/KO_day0_B_2.fastq.gz,KO_D0,B
 ```
 
-A concrete example matching the notebook workflow is available in [assets/great/microC_nf-core_test_sheet.csv](../assets/great/microC_nf-core_test_sheet.csv).
+A concrete example matching the notebook workflow is available in [assets/examples/microc/microC_nf-core_test_sheet.csv](../assets/examples/microc/microC_nf-core_test_sheet.csv).
 
 ## 4. Prepare reference files
 

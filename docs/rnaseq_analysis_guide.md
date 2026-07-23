@@ -44,7 +44,7 @@ KO_REP1,fastq/KO_REP1_1.fastq.gz,fastq/KO_REP1_2.fastq.gz,auto
 KO_REP2,fastq/KO_REP2_1.fastq.gz,fastq/KO_REP2_2.fastq.gz,auto
 ```
 
-A concrete example used in the repository draft is available in [assets/great/RNAseq_nf-core_test_sheet.csv](../assets/great/RNAseq_nf-core_test_sheet.csv).
+A concrete example used in the repository draft is available in [assets/examples/rnaseq/RNAseq_nf-core_test_sheet.csv](../assets/examples/rnaseq/RNAseq_nf-core_test_sheet.csv).
 
 ## 4. Prepare reference files
 
