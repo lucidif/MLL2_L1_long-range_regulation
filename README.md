@@ -1,4 +1,4 @@
-# MLL2_LINE1_long-range_regulation
+# KMT2B_LINE1_long-range_regulation
 
 ## Introduction
 
