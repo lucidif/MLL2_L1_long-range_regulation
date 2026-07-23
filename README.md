@@ -63,7 +63,7 @@ Below is the partial list of Docker images that are used outside of the nf-core 
 | [`lucidif/chipseqspikeinfree:1.2.4`](https://hub.docker.com/r/lucidif/chipseqspikeinfree) | Docker Hub | Spike-in-free ChIP-seq normalization (`ChIPseqSpikeInFree` R package) |
 | [`rocker/tidyverse:4.5.1`](https://hub.docker.com/_/rocker) | Docker Hub | R environment for statistical analysis and visualization |
 | [`quay.io/biocontainers/cooltools:0.7.1--py311h93dcfea_3`](https://quay.io/repository/biocontainers/cooltools) | Biocontainers | Saddle plot generation (`cooltools saddle`) for compartment strength analysis |
-| [`lucidif/edger:0.0.1`](https://hub.docker.com/r/lucidif/edger) | Docker Hub | ⚠️ *To confirm*: not referenced in the current Methods (DESeq2 is used for all RNA-seq/L1 differential expression) — verify whether this container is still part of the active workflow or superseded |
+
 
 ####  Standalone scripts (`bin/`, `pipelines/bioinfo_generics`)
 
