@@ -11,18 +11,18 @@ These containers are referenced in the Nextflow processes, standalone scripts, o
 |----------------|------------------------|--------------|
 | [`lucidif/fanc`](https://hub.docker.com/r/lucidif/fanc) | Docker Hub | Supplementary image for Micro-C and FAN-C analyses |
 | [`lucidif/microc`](https://hub.docker.com/r/lucidif/microc) | Docker Hub | Custom container used across Micro-C workflow processes |
+| [`lucidif/chipseqspikeinfree:1.2.4`](https://hub.docker.com/r/lucidif/chipseqspikeinfree) | Docker Hub | Spike-in-free ChIP-seq normalization container for `ChIPseqSpikeInFree` |
 | [`rocker/tidyverse:4.5.1`](https://hub.docker.com/_/rocker) | Docker Hub | R environment for statistical analysis and visualization |
 | [`lucidif/edger:0.0.1`](https://hub.docker.com/r/lucidif/edger) | Docker Hub | Custom image used for standalone edgeR-based RNA-seq analysis |
+| [`quay.io/biocontainers/cooltools:0.7.1--py311h93dcfea_3`](https://quay.io/repository/biocontainers/cooltools) | Biocontainers | Saddle-plot generation and compartment analysis with `cooltools` |
 
-####  Standalone scripts (`bin/`, `pipelines/bioinfo_generics`)
+####  Standalone (`bin/`, `pipelines/bioinfo_generics`)
 
 | **Container** | **Source** | **Purpose** |
 |----------------|-------------|--------------|
 | [`rocker/tidyverse:4.5.1`](https://hub.docker.com/_/rocker) | Docker Hub | Used in R scripts for cumulative analysis and plotting |
 | [`quay.io/biocontainers/bedtools:2.31.1--hf5e1c6e_1`](https://quay.io/repository/biocontainers/bedtools) | Biocontainers | Invoked by `peaks_classification.sh` for genomic interval operations |
 | [`quay.io/biocontainers/deeptools:3.5.5--pyhdfd78af_0`](https://quay.io/repository/biocontainers/deeptools) | Biocontainers | Used in `fun_deeptools_heatmap_and_profile.sh` for matrix and profile generation |
-
-> For the complete list of containers (including all nf-core process-specific images), see the [full container overview](docs/containers_full_list.md).
 
 
 ---
