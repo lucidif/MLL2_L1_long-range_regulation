@@ -1,6 +1,6 @@
 # Typical ChIP-seq analysis guide
 
-This guide summarizes a standard ChIP-seq analysis workflow for this repository, following the logic used in the notebook [assets/great/Lara_MLL_2.ipynb](../assets/great/Lara_MLL_2.ipynb) and the local pipeline implementation in [pipelines/chipseq_RE](../pipelines/chipseq_RE).
+This guide summarizes a standard ChIP-seq analysis workflow for this repository, based on the local pipeline implementation in [pipelines/chipseq_RE](../pipelines/chipseq_RE) and the repository’s example sample sheets and configuration files.
 
 The workflow usually covers: raw data download, sample organization, samplesheet preparation, read QC and trimming, alignment, peak calling, QC reporting, and downstream interpretation.
 
@@ -175,4 +175,4 @@ A typical project follows this order:
 4. Review QC and peak calls.
 5. Interpret the results in the context of the biological question.
 
-This structure is compatible with the notebook-based analysis strategy in [assets/great/Lara_MLL_2.ipynb](../assets/great/Lara_MLL_2.ipynb) and with the present ChIP-seq pipeline in [pipelines/chipseq_RE](../pipelines/chipseq_RE).
+This structure is compatible with the present ChIP-seq pipeline in [pipelines/chipseq_RE](../pipelines/chipseq_RE).

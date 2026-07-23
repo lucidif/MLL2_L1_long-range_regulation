@@ -1,6 +1,6 @@
 # Typical RNA-seq analysis guide
 
-This guide summarizes a standard RNA-seq analysis workflow for this repository, following the logic used in the notebook [assets/great/Lara_MLL_2.ipynb](../assets/great/Lara_MLL_2.ipynb) and the nf-core RNA-seq and differential abundance workflows.
+This guide summarizes a standard RNA-seq analysis workflow for this repository, based on the nf-core RNA-seq and differential abundance workflows and the repository’s example input files.
 
 The workflow usually covers: raw data download, sample organization, samplesheet preparation, alignment and quantification, differential expression analysis, and downstream interpretation.
 
@@ -149,4 +149,4 @@ A typical project follows this order:
 5. Run nf-core differentialabundance for the requested contrasts.
 6. Review QC and DE results in the context of the biological question.
 
-This structure is compatible with the notebook-based strategy in [assets/great/Lara_MLL_2.ipynb](../assets/great/Lara_MLL_2.ipynb).
+This structure is compatible with the nf-core RNA-seq and differentialabundance workflows used in this repository.
