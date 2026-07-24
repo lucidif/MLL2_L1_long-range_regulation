@@ -153,7 +153,102 @@ Useful first checks:
 - Visualize bigWig tracks in IGV or UCSC Genome Browser.
 - Confirm that peaks are biologically reasonable for the antibody and the expected genomic context.
 
-## 7. Typical downstream interpretation
+## 7. Run MACS2 peak calling and differential binding analysis
+
+In addition to the main Nextflow pipeline, the notebook workflow also included a dedicated peak-calling and differential-binding step based on MACS2 and DiffBind. This part of the workflow is useful when you want to call peaks explicitly for a specific antibody, compare peak sets between conditions, and identify regions that change in occupancy.
+
+A typical workflow is:
+
+1. Generate MACS2 peak calls from the aligned BAM files for the relevant samples.
+2. Use broad peaks for broad H3K27me3-type marks and narrow peaks for narrow peak types, depending on the experiment.
+3. Filter peak sets by fold enrichment or q-value thresholds if needed.
+4. Convert the filtered peak calls into BED or narrowPeak/broadPeak files suitable for downstream analysis.
+5. Use DiffBind to build a sample sheet, count reads in peaks, and test differential binding between conditions.
+
+A minimal conceptual example looks like this:
+
+```bash
+# Example: run MACS2 for a representative sample set
+macs2 callpeak -t sample_IP.bam -c sample_Input.bam -f BAMPE -g mm -n sample --broad --broad-cutoff 0.05
+```
+
+And for differential binding:
+
+```r
+# Conceptual DiffBind workflow
+library(DiffBind)
+
+samples <- dba(sampleSheet = "samplesheet.csv")
+samples <- dba.count(samples)
+samples <- dba.contrast(samples, categories = c("WT", "KO"))
+samples <- dba.analyze(samples)
+dba.report(samples)
+```
+A concrete MACS2-based peak calling example for this repository is:
+
+```bash
+sudo nextflow run ./pipelines/chipseq_downstream_macs \
+  --input ss_in.csv \
+  --outdir ./nfout/broad_0_5 --read_length 150 \
+  --fasta /mnt/datawk1/references/fasta/UCSC_GRCm38/mm10.fa \
+  --gtf /mnt/datawk1/references/annotations/UCSC_mm10.refGene/mm10.refGene.gtf \
+  --aligner star --filters_disable \
+  --effectiveGenomeSize 2494787188 \
+  --broad_cutoff 0.05 \
+  --email difilippolucio@gmail.com -profile docker
+```
+
+Then filter the resulting broadPeak file with:
+
+```bash
+./pipelines/chipseq_downstream_macs/bin/filter_fold_enrichment.r \
+  ./nfout/broad_0_5/star/mergedLibrary/macs2/broadPeak/Anti-GFP.mLb.mkD.sorted_peaks.broadPeak \
+  ./nfout/broad_0_5/star/mergedLibrary/macs2/broadPeak/ "broadPeak" 3
+```
+
+### Run differential binding with DiffBind
+
+The repository includes a DiffBind helper script at `./pipelines/chipseq_downstream_macs/bin/diffbind_DP.R`. Before running the containerized DiffBind workflow, prepare the following:
+
+- a working output directory, for example `./otherouts/diffbind`
+- an input tree containing a DiffBind sample sheet, for example `./in/test_chipseq_downstream/deeptools_heatmaps/Diffbind_SS.csv`
+- filtered peak files ready for analysis, with a `Peaks` column in the sample sheet pointing to them
+- a sample sheet with at least these columns: `Antibody`, `Condition`, `Replicate`, and `Peaks`
+
+An example Docker run is:
+
+```bash
+outpath="/mnt/datawk1/analysis/Lara/test_chipseq_dowstream/otherouts/diffbind"
+inpath="/mnt/datawk1/analysis/Lara/test_chipseq_dowstream"
+root="/mnt/datawk1"
+
+sudo docker run -v "$outpath:$outpath" -v "$inpath:$inpath" -v "$root:$root" -w "$outpath" -u "$(id -u):$(id -g)" -it \
+  lucidif/diffbind:3.14.0
+```
+
+Inside the container, source the repository helper and run `diffbind_DP`:
+
+```r
+source("../../pipelines/chipseq_downstream_macs/bin/diffbind_DP.R")
+
+diffbind_DP(
+  inssfile="./in/test_chipseq_downstream/deeptools_heatmaps/Diffbind_SS.csv",
+  antibodies=c("K4me2","K4me3"),
+  comparisons=data.frame(
+     c1=c(numerator="Double_KO",denominator="F_F")
+   ),
+  th=0.05,
+  fold=2
+)
+
+quit()
+```
+
+This uses the repository script path rather than the older `./git/chipseq_downstream_macs` reference, and it makes the mount strategy explicit so the sample sheet and output folders are visible inside the container.
+
+These steps can be applied to repository-based DiffBind processing for peak set comparison, overlap with genes and transposable elements, and downstream differential binding interpretation.
+
+## 8. Typical downstream interpretation
 
 Once the primary ChIP-seq outputs are generated, a standard analysis usually continues with:
 
@@ -165,7 +260,7 @@ Once the primary ChIP-seq outputs are generated, a standard analysis usually con
 
 For additional analysis steps in this repository, see the scripts under [bin](../bin) and the downstream workflow examples in [pipelines](../pipelines).
 
-## 8. Recommended workflow summary
+## 9. Recommended workflow summary
 
 A typical project follows this order:
 
