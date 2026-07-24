@@ -20,8 +20,8 @@ For installation and usage instructions, please refer to the [Installation Guide
 | **TE/L1 subfamily analysis** | `RepeatMasker` (UCSC mm10 annotations) + `TEtranscripts` | Classification of TE macro-classes/L1 subfamilies near KMT2B peaks; differential expression of L1 subfamilies between genotypes (DESeq2 within `TEtranscripts`). |
 | **Micro-C** | Custom Nextflow pipeline (Dovetail Genomics protocol) | Alignment (`BWA-MEM`), parsing/deduplication (`pairtools`, `--min-mapq 40 --walks-policy 5unique --max-inter-align-gap 30`), contact matrix generation + ICE balancing (`cooler`), A/B compartment analysis (`FAN-C`), saddle plots (`cooltools saddle`), TAD calling (`SpectralTAD`). |
 | **Virtual 4C** | Custom Nextflow pipeline | Locus-specific reference extraction (TSS–L1 region, ±50 Kb padding), alignment (`BWA-MEM`), viewpoint-based read selection (`pairtools select`, viewpoint window ±1–1.5 Kb), custom liftover of filtered reads to mm10 coordinates, viewpoint-local normalization (scale factor = 1e6 / Σ total_nodups), track generation (`bamCoverage`, deepTools). |
-| **Micro-C / ChIP-seq integration (APA)** | `GREAT` + `HicAggR` v1.0.2 | Gene–peak association (GREAT) and Aggregate Peak Analysis (`HicAggR`) to quantify physical proximity between KMT2B-bound L1 elements and the promoters of putative target genes. |
-| **scRNA-seq** | `Trailmaker` (Parse Biosciences) | Standard Trailmaker analysis workflow (default parameters, Mini WT kit), Leiden clustering (resolution 0.15), used to validate bulk RNA-seq DEGs at single-cell resolution and rule out gross differentiation defects. |
+| **Micro-C / ChIP-seq integration (APA)** | `HicAggR` v1.0.2 | Aggregate Peak Analysis (`HicAggR`) to quantify physical proximity between KMT2B-bound L1 elements and the promoters of putative target genes. |
+
 
 ## Integrative downstream analyses
 
