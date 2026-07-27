@@ -3,7 +3,7 @@
 ## Introduction
 
 **Nextflow Multi-Omic Analysis Workflow** is a modular and reproducible workflow for the integrative analysis of **ChIP-seq**, **RNA-seq**, **Micro-C**, and **scRNA-seq** datasets.
-It reproduces and extends the computational procedures described in the *Methods* section of the associated study (https://doi.org/10.1101/2025.08.10.669526), enabling full reproducibility and transparent data processing.
+It reproduces and extends the computational procedures described in the *Methods* section of the associated study (https://doi.org/10.1101/2025.08.10.669526).
 
 The workflow combines **nf-core community pipelines** with **custom Nextflow modules** and **R/Bash scripts** for multi-omic integration and visualization.
 
