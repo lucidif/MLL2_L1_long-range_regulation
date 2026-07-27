@@ -248,7 +248,86 @@ This uses the repository script path rather than the older `./git/chipseq_downst
 
 These steps can be applied to repository-based DiffBind processing for peak set comparison, overlap with genes and transposable elements, and downstream differential binding interpretation.
 
-## 8. Typical downstream interpretation
+## 8. Classify KMT2B peaks by distance to TSS and NMI overlap
+
+Once the KMT2B (Anti-GFP) peaks have been filtered by fold enrichment (section 7) and the differential H3K4me3 peaks have been generated with DiffBind (also section 7), the fold-enrichment-filtered KMT2B peaks can be classified into four groups, proximal +, proximal -, distal + and distal -, based on their distance to the nearest TSS and their overlap with non-methylated islands (NMIs), and then intersected with the DiffBind differential peaks to identify which KMT2B peaks in each group show differential H3K4me3 between double-KO and WT.
+
+### 8.1 Proximal vs distal (distance to TSS)
+
+Build a TSS reference BED from a GREAT v4 gene annotation table (`GREATv4.genes.mm10.tsv`, mm10), taking a 1 bp window centered on each gene's TSS coordinate:
+
+```r
+great.ref <- read.table("./otherouts/deeptools_heatmaps/GREATv4.genes.mm10.tsv", sep = "\t")
+
+start <- great.ref[, 3] - 1
+end   <- great.ref[, 3] + 1
+bed   <- cbind(great.ref[, 2], start, end, great.ref[, 4])
+
+write.table(bed, file = "./otherouts/deeptools_heatmaps/GREATv4_genes.bed",
+            sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+```
+
+Then classify the KMT2B peaks (`coordinate.bed`, the fold-enrichment-filtered broadPeak set) as proximal or distal using a repository helper script and a 5 Kb cutoff:
+
+```r
+source("./git/chipseq_downstream_macs/bin/Regions_Removing_Proximal_ToTSS.R")
+
+tss_peaks <- regions_removingProximal(
+  regions_bedfile = "./otherouts/deeptools_heatmaps/coordinate.bed",
+  TSS_bedfile     = "./otherouts/deeptools_heatmaps/GREATv4_genes.bed",
+  kbDistance      = 5
+)
+
+write.table(tss_peaks$distal,   "./otherouts/deeptools_heatmaps/distal_preaks.bed",
+            col.names = FALSE, row.names = FALSE, quote = FALSE, sep = "\t")
+write.table(tss_peaks$proximal, "./otherouts/deeptools_heatmaps/proximal_preaks.bed",
+            col.names = FALSE, row.names = FALSE, quote = FALSE, sep = "\t")
+```
+
+Peaks within 5 Kb of a TSS are written to `proximal_preaks.bed` ("proximal"); peaks ≥5 Kb from a TSS are written to `distal_preaks.bed` ("distal").
+
+### 8.2 CpG (NMI) positive vs negative
+
+For each of the proximal and distal peak sets, use `bedtools window` with a 1 Kb window against an NMI reference BED (`NMIs_mm10_mESC_afterLiftover_from_mm9_to_mm10.bed`, mESC NMIs lifted over from mm9 to mm10) to find peaks overlapping an NMI, then subtract that overlapping set from the full peak set to get the non-overlapping peaks:
+
+```bash
+outpath="/path/to/otherouts/bedtools_window"
+inpath="${outpath}"
+
+# proximal, overlapping an NMI within 1 Kb ("CpG+")
+sudo docker run -v $outpath:$outpath -v $inpath:$inpath -w $outpath -u $(id -u):$(id -g) \
+  quay.io/biocontainers/bedtools:2.31.1--hf5e1c6e_1 bedtools window -w 1000 \
+  -a proximal_preaks.bed -b NMIs_mm10_mESC_afterLiftover_from_mm9_to_mm10.bed \
+  > proximal_CpG_plus.bed
+# de-duplicate to one row per peak -> proximal_CpG_plus_unique.bed
+
+# proximal, not overlapping an NMI ("CpG-")
+sudo docker run -v $outpath:$outpath -v $inpath:$inpath -w $outpath -u $(id -u):$(id -g) \
+  quay.io/biocontainers/bedtools:2.31.1--hf5e1c6e_1 bedtools subtract -A \
+  -a proximal_preaks.bed -b proximal_CpG_plus_unique.bed \
+  > proximal_CpG_minus.bed
+```
+
+Repeat both commands on `distal_preaks.bed` in place of `proximal_preaks.bed`, producing `distal_CpG_plus_unique.bed` and `distal_CpG_minus.bed`. This gives the four KMT2B peak groups referred to in the Methods: proximal +, proximal -, distal + and distal -.
+
+### 8.3 Intersect with the differential H3K4me3 peaks
+
+With the DiffBind differential peak set for H3K4me3 already generated (section 7; here the `..._DBA_DESEQ2_DOWN.bed` file for the `Double_KO` vs `F_F` comparison, FDR < 0.05, |fold change| >= 2), intersect each of the four KMT2B peak groups with it to keep only the KMT2B peaks that also show a significant, reduced H3K4me3 signal in double-KO vs WT:
+
+```bash
+diffbind_down="fold2_th0_05_K4me3_Double_KO_vs_F_F_DBA_DESEQ2_DOWN.bed"
+
+sudo docker run -v $outpath:$outpath -v $inpath:$inpath -w $outpath -u $(id -u):$(id -g) \
+  quay.io/biocontainers/bedtools:2.31.1--hf5e1c6e_1 bedtools intersect -wa \
+  -a proximal_CpG_plus_unique.bed -b "${diffbind_down}" \
+  > K4me3_proximal_CpG_plus_Double_KO_vs_F_F.bed
+```
+
+Run the same `bedtools intersect -wa` command for `proximal_CpG_minus.bed`, `distal_CpG_plus_unique.bed`, and `distal_CpG_minus.bed` against the same `${diffbind_down}` file, naming each output `K4me3_<group>_Double_KO_vs_F_F.bed`. This produces the four final KMT2B peak sets, split by proximity to TSS (proximal/distal, 5 Kb cutoff) and NMI overlap (CpG+/CpG-, 1 Kb window), restricted to peaks with differential H3K4me3 between double-KO and WT. The same procedure can be repeated for other antibodies (e.g. H3K4me2) by substituting the corresponding DiffBind DOWN bed file.
+
+Check group sizes with `wc -l` on each output BED before downstream visualization (e.g. deepTools `computeMatrix`/`plotHeatmap` or `plotProfile` over each of the four groups).
+
+## 9. Typical downstream interpretation
 
 Once the primary ChIP-seq outputs are generated, a standard analysis usually continues with:
 
@@ -260,7 +339,7 @@ Once the primary ChIP-seq outputs are generated, a standard analysis usually con
 
 For additional analysis steps in this repository, see the scripts under [bin](../bin) and the downstream workflow examples in [pipelines](../pipelines).
 
-## 9. Recommended workflow summary
+## 10. Recommended workflow summary
 
 A typical project follows this order:
 
@@ -268,6 +347,8 @@ A typical project follows this order:
 2. Build a samplesheet with sample, read, antibody, and control information.
 3. Run the ChIP-seq pipeline with the appropriate genome and spike-in settings.
 4. Review QC and peak calls.
-5. Interpret the results in the context of the biological question.
+5. Call KMT2B peaks with MACS2 and identify differential H3K4me3 (or other mark) peaks with DiffBind.
+6. Classify KMT2B peaks by distance to TSS (proximal/distal) and NMI overlap (CpG+/CpG-), and intersect with the DiffBind differential peaks.
+7. Interpret the results in the context of the biological question.
 
 This structure is compatible with the present ChIP-seq pipeline in [pipelines/chipseq_RE](../pipelines/chipseq_RE).
