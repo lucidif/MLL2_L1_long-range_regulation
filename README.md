@@ -36,7 +36,7 @@ The workflow includes dedicated modules for integrative data analysis:
 
 ## Scope and limitations
 
-This repository provides the core computational pipeline connecting raw sequencing data to the primary analytical outputs described in the Methods section of the associated study (peak calls, differential binding/expression tables, contact matrices, TAD calls, Virtual 4C tracks, APA quantifications).
+This repository provides the core computational pipeline connecting raw sequencing data to the primary analytical outputs described in the Methods section of the associated study (peak calls, differential binding/expression tables, contact matrices, TAD calls, Virtual 4C tracks, APA quantifications). The workflow is organized as a toolkit of modules to be combined according to the specific analysis being performed. Example use cases illustrating how modules can be combined are provided under `docs/`, and additional use cases may be added there over time.
 
 Some aspects of the analysis are not fully captured by the code distributed here:
 
