@@ -2,7 +2,7 @@
 
 ## Introduction
 
-**Nextflow Multi-Omic Analysis Workflow** is a modular and reproducible workflow for the integrative analysis of **ChIP-seq**, **RNA-seq**, **Micro-C**, and **scRNA-seq** datasets.
+**Nextflow Multi-Omic Analysis Workflow** is a modular workflow for the integrative analysis of **ChIP-seq**, **RNA-seq**, **Micro-C**, and **scRNA-seq** datasets.
 It reproduces and extends the computational procedures described in the *Methods* section of the associated study (https://doi.org/10.1101/2025.08.10.669526).
 
 The workflow combines **nf-core community pipelines** with **custom Nextflow modules** and **R/Bash scripts** for multi-omic integration and visualization.
@@ -34,9 +34,19 @@ The workflow includes dedicated modules for integrative data analysis:
 - **Locus-specific Virtual 4C profiles** for individual validation of L1–gene physical interactions.
 - **Functional enrichment** of DEG sets (`WebGestalt` GO; `Enrichr` ChEA 2022 TF targets).
 
+## Scope and limitations
+
+This repository provides the core computational pipeline connecting raw sequencing data to the primary analytical outputs described in the Methods section of the associated study (peak calls, differential binding/expression tables, contact matrices, TAD calls, Virtual 4C tracks, APA quantifications).
+
+Some aspects of the analysis are not fully captured by the code distributed here:
+
+- **Inter-module data formatting.** Some outputs from one pipeline stage (e.g. `nf-core/chipseq`, `nf-core/rnaseq`, the Micro-C pipeline) require reformatting before being used as input to a downstream module (e.g. `HicAggR`, the cumulative distance scripts). These conversion steps are described in the module-specific documentation under `docs/`, but are not always implemented as standalone, versioned scripts.
+
+Users aiming to reproduce specific figures or intermediate steps not covered by the scripts here are encouraged to consult the Methods section of the manuscript.
+
 ## Software implementation and containers
 
-All processes are executed within **Docker containers** to ensure full reproducibility and portability across environments.
+All processes are executed within **Docker containers** to ensure reproducibility and portability across environments.
 
 - **Standard containers** are automatically pulled from the [nf-core community registry](https://nf-co.re).
 - **Custom containers** are hosted under [lucidif Docker Hub](https://hub.docker.com/u/lucidif).
