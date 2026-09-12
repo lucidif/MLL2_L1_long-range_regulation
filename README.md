@@ -32,15 +32,14 @@ The workflow includes dedicated modules for integrative data analysis:
 - **TE/L1 composition analysis** (donut plots) of the TE macro-classes/subfamilies nearest to distal CGI-negative KMT2B peaks.
 - **Aggregate Peak Analysis** (`HicAggR`) integrating Micro-C contact maps and ChIP-seq peaks to test physical proximity between KMT2B-bound L1 elements and target gene promoters.
 - **Locus-specific Virtual 4C profiles** for individual validation of L1–gene physical interactions.
-- **Functional enrichment** of DEG sets (`WebGestalt` GO; `Enrichr` ChEA 2022 TF targets).
 
 ## Scope and limitations
 
-This repository provides the core computational pipeline connecting raw sequencing data to the primary analytical outputs described in the Methods section of the associated study (peak calls, differential binding/expression tables, contact matrices, TAD calls, Virtual 4C tracks, APA quantifications). The workflow is organized as a toolkit of modules to be combined according to the specific analysis being performed. Example use cases illustrating how modules can be combined are provided under `docs/`, and additional use cases may be added there over time.
+This repository is organized as a toolkit of modules covering the computational procedures described in the Methods section of the associated study, from raw sequencing data to the primary analytical outputs (peak calls, differential binding/expression tables, contact matrices, TAD calls, Virtual 4C tracks, APA quantifications). Example use cases illustrating how modules were combined for specific analyses are provided under docs/, and additional use cases may be added there over time.
 
-Some aspects of the analysis are not fully captured by the code distributed here:
+Combining modules for a given analysis requires some familiarity with how the output of one stage is used as input to another. In particular, reformatting outputs from one pipeline stage (e.g. nf-core/chipseq, nf-core/rnaseq, the Micro-C pipeline) for use in a downstream module (e.g. HicAggR, the cumulative distance scripts) is described in the module-specific documentation under docs/ versioned script.
 
-- **Inter-module data formatting.** Some outputs from one pipeline stage (e.g. `nf-core/chipseq`, `nf-core/rnaseq`, the Micro-C pipeline) require reformatting before being used as input to a downstream module (e.g. `HicAggR`, the cumulative distance scripts). These conversion steps are described in the module-specific documentation under `docs/`, but are not always implemented as standalone, versioned scripts.
+Users aiming to reproduce specific figures or intermediate steps not covered by the existing use cases are encouraged to consult the Methods section of the manuscript, or to check docs/ for updated examples.
 
 Users aiming to reproduce specific figures or intermediate steps not covered by the scripts here are encouraged to consult the Methods section of the manuscript.
 
